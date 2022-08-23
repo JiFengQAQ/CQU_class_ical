@@ -15,7 +15,7 @@ pip install uuid xlrd
 git clone https://github.com/JiFengQAQ/CQU_class_ical.git
 ```
 
-     或直接在网页上选择`Download ZIP`
+或直接在网页上选择`Download ZIP`
 
 3.   从[重庆大学教务管理系统-选课管理](https://my.cqu.edu.cn/enroll/Home)中下载整个学期Excel文件格式的课表
 
@@ -23,7 +23,7 @@ git clone https://github.com/JiFengQAQ/CQU_class_ical.git
 
      您亦可选择复制全部条目到项目根目录的示例文件`simple_classInfo.xls`中, 并重命名为`classInfo.xls`
 
-5.   执行 `main.py`: 
+5.   执行 `main.py`, 先使用功能`2`, 再使用功能`3`: 
 
 ```shell
 python main.py
