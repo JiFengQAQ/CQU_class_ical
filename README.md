@@ -15,7 +15,7 @@ pip install uuid xlrd
 git clone https://github.com/JiFengQAQ/CQU_class_ical.git
 ```
 
-​		或直接在网页上选择`Download ZIP`
+	或直接在网页上选择`Download ZIP`
 
 3.   从[重庆大学教务管理系统-选课管理](https://my.cqu.edu.cn/enroll/Home)中下载整个学期Excel文件格式的课表
 
@@ -44,7 +44,7 @@ python3 main.py
 
 ## 进一步说明
 
-###示例课表文件
+### 示例课表文件
 
 `simple_classInfo.xls`
 
@@ -58,7 +58,7 @@ python3 main.py
 
 就是按照学校时间设置的, 也可以自己对照着改. 
 
-###是否显示教师、是否显示课程班号
+### 是否显示教师、是否显示课程班号
 
 可在 `excel_reader.py` 的第23, 24行中更改每行的第一个数字来开启和关闭(`0`关闭, `1`开启) 
 
