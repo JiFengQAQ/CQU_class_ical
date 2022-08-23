@@ -1,21 +1,29 @@
-# ClasstableToIcal
-Convert Classtable to iCal using Pything and Excel as data source.
+# CQU_class_ical
+本工具基于[SunsetYe66](https://github.com/SunsetYe66)的[ClasstableToIcal](https://github.com/SunsetYe66/ClasstableToIcal), 可将重庆大学教务网生成的课表转化为ical日历, 方便大家快速查看和设置提醒, 无需借助任何第三方网络服务和app. 
 
-该工具可以方便地将课程表转换为 `.ics` 格式以导入各种设备的「日程」中。
+## 使用说明
 
-> :warning: **注意**: 由于作者学校不再使用自建教务系统，该项目短期内不会再有进一步的功能开发。欢迎提交 PR 更新功能。
-
-## Usage
-
-以下为简略说明，更详细教程请参看[少数派](https://sspai.com/post/59694)。
-
-先安装依赖：
+1.   先安装依赖: 
 
 ```shell
 pip install uuid xlrd 
 ```
 
-然后执行 `main.py`：
+2.   将该项目克隆到本地: 
+
+```shell
+git clone https://github.com/JiFengQAQ/CQU_class_ical.git
+```
+
+​		或直接在网页上选择`Download ZIP`
+
+3.   从[重庆大学教务管理系统-选课管理](https://my.cqu.edu.cn/enroll/Home)中下载整个学期Excel文件格式的课表
+
+4.   将课表“另存为”到项目根目录, 并重命名、修改格式为`classInfo.xls`, 注意后缀名需要是`.xls`, 即`Excel 97-2004 工作簿`;
+
+     您亦可选择复制全部条目到项目根目录的示例文件`simple_classInfo.xls`中, 并重命名为`classInfo.xls`
+
+5.   执行 `main.py`: 
 
 ```shell
 python main.py
@@ -23,38 +31,43 @@ python main.py
 python3 main.py
 ```
 
-测试环境为：Python 3.7.2，Windows 10 x64.
+测试环境: Python 3.7.9, macOS Monterey(12.4)
 
-## 文件中格式解释
+## 项目功能
 
-### temp_classInfo.xlsx
+-   导入重庆大学教务网的课表并制作为ical日历文件
+-   支持不同周次、不同节次的自动识别、分割和合并
+-   `占周不占时间`的课程暂**<u>不</u>**被支持, 程序会自动跳过
+-   支持标记任课教师和课程班号(默认禁用, 因为可能会被部分系统误识别为电话号码)
+-   可设置课前提醒(未经过测试)
+-   支持创建单独的周号标记, 不再需要查校历或者慢慢数
 
-课程的名称、起始周数等在文件里已标示清楚，weekStatus 是单双周标记。
+## 进一步说明
 
-> 0=不分单双周，1=单周，2=双周
+###示例课表文件
 
-是否显示教师、是否开启单双周功能可在 `excel_reader.py` 中更改。
+`simple_classInfo.xls`
 
-### conf_classTime.json
+就是按照`my.cqu.edu.cn`	下载的文件格式来的, 应该没啥问题.
 
-```json
-"1": {
-    "name": "第 1 节", 
-    "startTime": "082000",
-    "endTime": "095500"
-}
-```
+记得只认`.xls`文件. 
 
-该文件为 JSON 格式，一开始的数字是**时段编号**，对应 `temp_classinfo.xls` 里的 `classTime` 字段；`startTime` 与 `endTime` 采用 `%H%M%S` 格式，即时、分、秒去掉分隔符。
+### 具体行课时间表
 
-## Feature
+`conf_classTime.json`	
 
-现在支持：
+就是按照学校时间设置的, 也可以自己对照着改. 
 
-- 单双周排课
-- 课前n分钟提醒（待进一步测试）
-- 不同教室（添加多个条目）
-- 跨时段上课（[Contributed by @BoisV](https://github.com/SunsetYe66/ClasstableToIcal/pull/4)），现在定义上课时间段的方式改为开始时间id + 结束时间id，可以应对更复杂的时间需求
+###是否显示教师、是否显示课程班号
+
+可在 `excel_reader.py` 的第23, 24行中更改每行的第一个数字来开启和关闭(`0`关闭, `1`开启) 
+
+## To Do
+
+-   添加对整周课程的支持
+-   将教师、班号开关从代码中独立出来
+-   能够删除上课教室中的描述性文字
+-   优化命令行交互体验
 
 ## License
 

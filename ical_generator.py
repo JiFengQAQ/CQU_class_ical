@@ -127,10 +127,10 @@ END:VTIMEZONE
 
             try:  # 尝试处理纯数字的课程序号
                 obj["ClassSerial"] = str(int(obj["ClassSerial"]))
-                serial = f'课程序号：{obj["ClassSerial"]}'
+                serial = f'课程班号：{obj["ClassSerial"]}'
             except ValueError:
                 obj["ClassSerial"] = str(obj["ClassSerial"])
-                serial = f'课程序号：{obj["ClassSerial"]}'
+                serial = f'课程班号：{obj["ClassSerial"]}'
             except KeyError:  # 如果没有这个 key，直接略过
                 serial = ""
 
@@ -175,13 +175,7 @@ X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n{_alarm_base}END:VEVENT\n'''
             f.close()
 
         final_inform = f'''
-        最终文件 res-{str(utc_now)}.ics 已生成，可通过内网传输到 iOS Device 上使用。
-        方法：
-        \t1. 在放置 ics 的目录下打开终端。
-        \t2. 输入 python -m http.server 8000 或 python3 -m http.server 8000 搭建 HTTP 服务器
-        \t3. 在 iOS Device 的 Safari 浏览器中输入：
-        \t\t\t\t\t\thttp://{self.get_host_ip()}:8000/
-        \t4. 点击 res-{str(utc_now)}.ics，选择导入日历即可。'''
+        最终文件 res-{str(utc_now)}.ics 已生成，导入到各日历软件即可使用. '''
 
         print(final_inform)
 

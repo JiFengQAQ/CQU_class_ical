@@ -11,7 +11,7 @@ import json
 import xlrd
 import os
 from random import randint
-
+from cqu_config import classTimeTranslate
 
 class ExcelReader:
     def __init__(self):
@@ -37,21 +37,16 @@ class ExcelReader:
     def confirm_conf(self):
         # 与用户确定配置内容
         print("\n欢迎使用课程表生成工具·Excel 解析器。\n若自行修改过 Excel 表格结构，请检查。")
-        print("若要设定是否显示课程编号、是否显示任课教师，请修改 excel_reader.py 中的 27, 28 行。")
+        print("若要设定是否显示课程编号、是否显示任课教师，请修改 excel_reader.py 中的 23, 24 行。")
         print("ClassName: ", self.config["ClassName"])
-        print("StartWeek: ", self.config["StartWeek"])
-        print("EndWeek: ", self.config["EndWeek"])
-        print("Weekday: ", self.config["Weekday"])
-        print("ClassStartTime: ", self.config["ClassStartTime"])
-        print("ClassEndTime: ", self.config["ClassEndTime"])
+        print("ClassTime: ", self.config["ClassTime"])
         print("Classroom: ", self.config["Classroom"])
-        print("WeekStatus: ", self.config["WeekStatus"])
 
         print("isClassSerialEnabled: ", self.config["isClassSerialEnabled"][0], end="")
         if self.config["isClassSerialEnabled"][0]:
             print(" ,", "Serial: ", self.config["isClassSerialEnabled"][1])
 
-        print("isClassTeacherEnabled: ", self.config["isClassTeacherEnabled"][0], end="")
+        print(" isClassTeacherEnabled: ", self.config["isClassTeacherEnabled"][0], end="")
         if self.config["isClassTeacherEnabled"][0]:
             print(" ,", "Teacher: ", self.config["isClassTeacherEnabled"][1])
 
@@ -63,36 +58,36 @@ class ExcelReader:
 
     def load_data(self):
         i = 2 #去掉表头
+        _i = 0 #输出所用行标
         while i < self.numOfRow:
-            _i = i - 2 #输出所用行标
-            self.classList.append(dict())
-            self.classList[_i].setdefault("ClassName", self.table.cell(i, self.config["ClassName"]).value)
-            self.classList[_i].setdefault("StartWeek", self.table.cell(i, self.config["StartWeek"]).value)
-            self.classList[_i].setdefault("EndWeek", self.table.cell(i, self.config["EndWeek"]).value)
-            self.classList[_i].setdefault("WeekStatus", self.table.cell(i, self.config["WeekStatus"]).value)
-            self.classList[_i].setdefault("Weekday", self.table.cell(i, self.config["Weekday"]).value)
-            self.classList[_i].setdefault("ClassStartTimeId", self.table.cell(i, self.config["ClassStartTime"]).value)
-            self.classList[_i].setdefault("ClassEndTimeId", self.table.cell(i, self.config["ClassEndTime"]).value)
-            self.classList[_i].setdefault("Classroom", self.table.cell(i, self.config["Classroom"]).value)
-            if self.config["isClassSerialEnabled"][0]:
-                try:
-                    self.classList[_i].setdefault("ClassSerial",
-                                                  str(int(self.table.cell(
-                                                      i, self.config["isClassSerialEnabled"][1]).value)))
-                except ValueError:
-                    self.classList[_i].setdefault("ClassSerial",
-                                                  str(self.table.cell(i, self.config["isClassSerialEnabled"][1]).value))
-            if self.config["isClassTeacherEnabled"][0]:
-                self.classList[_i].setdefault("Teacher",
-                                              self.table.cell(i, self.config["isClassTeacherEnabled"][1]).value)
+            _i = len(self.classList)
+            singleClassList:list = classTimeTranslate(self.table.cell(i, self.config["ClassTime"]).value)
+            if singleClassList[0]["WholeWeek"]==True: #暂时没有能力处理整周课程
+                i+=1
+                continue
+            self.classList.extend(singleClassList)
+            for __i in range(_i,len(self.classList)):
+                self.classList[__i].setdefault("ClassName", self.table.cell(i, self.config["ClassName"]).value)
+                self.classList[__i].setdefault("WeekStatus", 0)
+                self.classList[__i].setdefault("Classroom", self.table.cell(i, self.config["Classroom"]).value)
+                if self.config["isClassSerialEnabled"][0]:
+                    try:
+                        self.classList[__i].setdefault("ClassSerial",
+                                                      str(int(self.table.cell(
+                                                          i, self.config["isClassSerialEnabled"][1]).value)))
+                    except ValueError:
+                        self.classList[__i].setdefault("ClassSerial",
+                                                      str(self.table.cell(i, self.config["isClassSerialEnabled"][1]).value))
+                if self.config["isClassTeacherEnabled"][0]:
+                    self.classList[__i].setdefault("Teacher",
+                                                  self.table.cell(i, self.config["isClassTeacherEnabled"][1]).value)
             i += 1
 
     def write_data(self):
         if os.path.exists("conf_classInfo.json"):
-            print("已存在 JSON 文件，使用随机文件名，请手动修改！")
-            filename = "conf_classInfo_" + str(randint(100, 999)) + ".json"
-        else:
-            filename = "conf_classInfo.json"
+            print("已存在 JSON 文件")
+            os.remove("conf_classInfo.json")
+        filename = "conf_classInfo.json"
         with open(filename, 'w', encoding='UTF-8') as json_file:
             json_str = json.dumps(self.classList, ensure_ascii=False, indent=4)
             json_file.write(json_str)
