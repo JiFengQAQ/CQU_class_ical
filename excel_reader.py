@@ -18,16 +18,10 @@ class ExcelReader:
         # 指定信息在 xls 表格内的列数，第一列是第 0 列。
         self.config = dict()
         self.config["ClassName"] = 0
-        self.config["StartWeek"] = 1
-        self.config["EndWeek"] = 2
-        self.config["Weekday"] = 3
-        self.config["ClassStartTime"] = 4
-        self.config["ClassEndTime"] = 5
-        self.config["Classroom"] = 6
-        self.config["WeekStatus"] = 7
-        self.config["isClassSerialEnabled"] = [1, 8]
-        self.config["isClassTeacherEnabled"] = [1, 9]
-        # weekStatus: 0=Disabled 1=odd weeks 单周 2=even weeks 双周
+        self.config["ClassTime"] = 2
+        self.config["Classroom"] = 3
+        self.config["isClassSerialEnabled"] = [0, 1]
+        self.config["isClassTeacherEnabled"] = [1, 4]
         # 读取 excel 文件
         try:
             self.data = xlrd.open_workbook('classInfo.xls')
@@ -43,7 +37,7 @@ class ExcelReader:
     def confirm_conf(self):
         # 与用户确定配置内容
         print("\n欢迎使用课程表生成工具·Excel 解析器。\n若自行修改过 Excel 表格结构，请检查。")
-        print("若要设定是否使用单双周、是否显示教师，请修改 excel_reader.py 中的 27, 28 行。")
+        print("若要设定是否显示课程编号、是否显示任课教师，请修改 excel_reader.py 中的 27, 28 行。")
         print("ClassName: ", self.config["ClassName"])
         print("StartWeek: ", self.config["StartWeek"])
         print("EndWeek: ", self.config["EndWeek"])
@@ -68,9 +62,9 @@ class ExcelReader:
             return 0
 
     def load_data(self):
-        i = 1
+        i = 2 #去掉表头
         while i < self.numOfRow:
-            _i = i - 1
+            _i = i - 2 #输出所用行标
             self.classList.append(dict())
             self.classList[_i].setdefault("ClassName", self.table.cell(i, self.config["ClassName"]).value)
             self.classList[_i].setdefault("StartWeek", self.table.cell(i, self.config["StartWeek"]).value)
