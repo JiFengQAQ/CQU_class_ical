@@ -47,10 +47,10 @@ class GenerateCal:
         return ip
 
     def set_attribute(self):
-        self.first_week = input("请输入第一周周一的日期，格式为 YYYYMMDD，如 20200224：")  # 第一周周一的日期
+        self.first_week = input("请输入第一周周一的日期, 格式为 YYYYMMDD, 如 20200224: ")  # 第一周周一的日期
         c = 0
         while c == 0:
-            self.inform_time = input("请输入提前提醒时间，以分钟计；若不需要提醒请输入 N：")
+            self.inform_time = input("请输入提前提醒时间, 以分钟计; 若不需要提醒请输入 N: ")
             try:
                 self.inform_time = int(self.inform_time)  # 提前 N 分钟提醒
                 if self.inform_time <= 60:
@@ -98,10 +98,10 @@ END:VTIMEZONE
                 f.write(ical_begin_base)
                 f.close()
         except:
-            print("写入失败！可能是没有权限，请重试。")
+            print("写入失败. 可能是没有权限, 请重试. ")
             sys.exit()
         else:
-            print("文件头写入成功！")
+            print("文件头写入成功. ")
 
         initial_time = datetime.strptime(self.first_week, "%Y%m%d")  # 将开始时间转换为时间对象
         i = 1
@@ -110,7 +110,7 @@ END:VTIMEZONE
             try:
                 delta_time = 7 * (obj['StartWeek'] - 1) + obj['Weekday'] - 1
             except TypeError:
-                print("请检查 Excel 中是否有无用行，并删除 conf_classInfo.json 后重新运行 Excel 读取器及 iCal 生成器！")
+                print("请检查 Excel 中是否有无用行, 并删除 conf_classInfo.json 后重新运行 Excel 读取器及 iCal 生成器. ")
                 sys.exit()
 
             if obj['WeekStatus'] == 1:  # 单周
@@ -127,10 +127,10 @@ END:VTIMEZONE
 
             try:  # 尝试处理纯数字的课程序号
                 obj["ClassSerial"] = str(int(obj["ClassSerial"]))
-                serial = f'课程班号：{obj["ClassSerial"]}'
+                serial = f'教学班号: {obj["ClassSerial"]}'
             except ValueError:
                 obj["ClassSerial"] = str(obj["ClassSerial"])
-                serial = f'课程班号：{obj["ClassSerial"]}'
+                serial = f'教学班号：{obj["ClassSerial"]}'
             except KeyError:  # 如果没有这个 key，直接略过
                 serial = ""
 
@@ -144,7 +144,7 @@ END:VTIMEZONE
             stop_time_str = stop_time_obj.strftime("%Y%m%dT%H%M%SZ")  # 注意是utc时间，直接+1天处理
             # 教师可选，在此做判断
             try:
-                teacher = f'教师：{obj["Teacher"]}\t'
+                teacher = f'教师: {obj["Teacher"]}\t'
             except KeyError:
                 teacher = ""
 
@@ -164,18 +164,18 @@ X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC\n{_alarm_base}END:VEVENT\n'''
             # 写入文件
             with open(f"res-{str(utc_now)}.ics", "a", encoding='UTF-8') as f:
                 f.write(_ical_base)
-                print(f"第{i}条课程信息写入成功！")
+                print(f"第{i}条课程信息写入成功. ")
                 i += 1
                 f.close()
 
         # 拼合头尾
         with open(f"res-{str(utc_now)}.ics", "a", encoding='UTF-8') as f:
             f.write("\nEND:VCALENDAR")
-            print(f"尾部信息写入成功！")
+            print(f"尾部信息写入成功. ")
             f.close()
 
         final_inform = f'''
-        最终文件 res-{str(utc_now)}.ics 已生成，导入到各日历软件即可使用. '''
+        最终文件 res-{str(utc_now)}.ics 已生成, 导入到各日历软件即可使用. '''
 
         print(final_inform)
 

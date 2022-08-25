@@ -19,9 +19,9 @@ class GenerateWeeks:
         self.g_color = "#68b88e"  # 预览时的颜色，可不改动
 
     def set_attribute(self):
-        print("请输入第一周周一的日期，若使用周日为一周的第一天可输入第一周周日的日期。")
-        self.first_week = input("格式为 YYYYMMDD，如 20200224：")
-        self.total_weeks = int(input("请输入总周数："))
+        print("请输入第一周周一的日期, 若使用周日为一周的第一天可输入第一周周日的日期. ")
+        self.first_week = input("格式为 YYYYMMDD, 如 20200224: ")
+        self.total_weeks = int(input("请输入总周数: "))
 
     def main_process(self):
         # 下方参数若要改动，请清楚自己在做什么
@@ -40,10 +40,10 @@ X-APPLE-CALENDAR-COLOR:{self.g_color}
                 f.write(ical_begin_base)
                 f.close()
         except:
-            print("写入失败！可能是没有权限，请重试。")
+            print("写入失败. 可能是没有权限, 请重试. ")
             sys.exit()
         else:
-            print("文件头写入成功！")
+            print("文件头写入成功. ")
 
         for i in range(self.total_weeks):
             curr_week = i + 1
@@ -62,18 +62,18 @@ END:VEVENT\n'''
             # 写入当前段 VEVENT
             with open(f"weeks-{str(f_random)}.ics", "a", encoding='UTF-8') as f:
                 f.write(_ical_base)
-                print(f"第{curr_week}周写入成功！")
+                print(f"第{curr_week}周写入成功. ")
                 f.close()
 
         # 写入尾部
         with open(f"weeks-{str(f_random)}.ics", "a", encoding='UTF-8') as f:
             ical_end_base = "\nEND:VCALENDAR"
             f.write(ical_end_base)
-            print(f"尾部信息写入成功！")
+            print(f"尾部信息写入成功. ")
             f.close()
 
         # 输出文件名作为提示
-        final_inform = f'最终文件 weeks-{str(f_random)}.ics 已生成。'
+        final_inform = f'最终文件 weeks-{str(f_random)}.ics 已生成. '
         print(final_inform)
 
 

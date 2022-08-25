@@ -49,8 +49,9 @@ class ExcelReader:
 
     def confirm_conf(self):
         # 与用户确定配置内容
-        print("\n欢迎使用课程表生成工具·Excel 解析器。\n若自行修改过 Excel 表格结构，请检查。")
-        print("若要设定是否显示课程编号、是否显示任课教师，请修改 excel_reader.py 中的 23, 24 行。")
+        print("--------------------------------------")
+        print("Excel 解析器:\n若自行修改过 Excel 表格结构, 请检查. ")
+        print("若要设定是否显示课程编号, 是否显示任课教师，请修改 note_config.json")
         print("ClassName: ", self.config["ClassName"])
         print("ClassTime: ", self.config["ClassTime"])
         print("Classroom: ", self.config["Classroom"])
@@ -65,7 +66,7 @@ class ExcelReader:
         if self.config["isClassTeacherEnabled"][0]:
             print(" ,", "Teacher: ", self.config["isClassTeacherEnabled"][1])
 
-        option = input("回车继续，输入其他内容退出：")
+        option = input("回车继续, 输入其他内容退出: ")
         if option:
             return 1
         else:
@@ -111,7 +112,7 @@ class ExcelReader:
 
     def write_data(self):
         if os.path.exists("conf_classInfo.json"):
-            print("已存在 JSON 文件")
+            print("已存在 JSON 文件, 自动覆盖")
             os.remove("conf_classInfo.json")
         filename = "conf_classInfo.json"
         with open(filename, 'w', encoding='UTF-8') as json_file:
@@ -124,7 +125,7 @@ class ExcelReader:
             sys.exit()
         self.load_data()
         self.write_data()
-        print("Excel 文件读取成功！")
+        print("Excel 文件读取成功. ")
 
 
 if __name__ == "__main__":
