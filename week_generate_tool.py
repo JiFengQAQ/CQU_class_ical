@@ -73,7 +73,7 @@ END:VEVENT\n'''
             f.close()
 
         # 输出文件名作为提示
-        final_inform = f'最终文件 weeks-{str(f_random)}.ics 已生成，可通过内网传输到 iOS Device 上使用，参见主文件。'
+        final_inform = f'最终文件 weeks-{str(f_random)}.ics 已生成。'
         print(final_inform)
 
 

@@ -1,5 +1,5 @@
 # CQU_class_ical
-本工具基于[SunsetYe66](https://github.com/SunsetYe66)的[ClasstableToIcal](https://github.com/SunsetYe66/ClasstableToIcal), 可将重庆大学教务网生成的课表转化为ical日历, 方便大家快速查看和设置提醒, 无需借助任何第三方网络服务和app. 
+本工具基于[SunsetYe66](https://github.com/SunsetYe66)的[ClasstableToIcal](https://github.com/SunsetYe66/ClasstableToIcal), 可将重庆大学教务网生成的课表转化为ics日历, 方便大家快速查看和设置提醒, 无需借助任何第三方网络服务和app. 
 
 ## 使用说明
 
@@ -35,9 +35,9 @@ python3 main.py
 
 ## 项目功能
 
--   导入重庆大学教务网的课表并制作为ical日历文件
+-   导入重庆大学教务网的课表并制作为ics日历文件
 -   支持不同周次、不同节次的自动识别、分割和合并
--   `占周不占时间`的课程暂**<u>不</u>**被支持, 程序会自动跳过
+-   `占周不占时间`的课程暂<b><u>不</u></b>被支持, 程序会自动跳过
 -   支持标记任课教师和课程班号(默认禁用, 因为可能会被部分系统误识别为电话号码)
 -   可设置课前提醒(未经过测试)
 -   支持创建单独的周号标记, 不再需要查校历或者慢慢数
